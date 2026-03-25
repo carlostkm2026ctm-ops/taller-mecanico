@@ -43,7 +43,7 @@ function openModal(item) {
   estadoWrap.appendChild(estadoLabel);
   const estadoSel = document.createElement("select");
   estadoSel.name = "estado";
-  for (const opt of ["Abierta", "En progreso", "Cerrada"]) {
+  for (const opt of ["Abierta", "En progreso", "Terminada"]) {
     const o = document.createElement("option");
     o.value = opt;
     o.textContent = opt;

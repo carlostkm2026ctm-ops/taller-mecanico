@@ -131,7 +131,7 @@ const ENTITIES = {
         label: "Estado",
         type: "select",
         required: true,
-        options: ["Abierta", "En progreso", "Cerrada"],
+        options: ["Abierta", "En progreso", "Terminada", "Cerrada"],
       },
       { key: "costo_total", label: "Costo total", type: "number" },
     ],
@@ -675,8 +675,13 @@ app.put("/api/:entityKey/:id", authRequired, (req, res) => {
     if (q.estado !== "Pendiente") return res.status(400).json({ error: "La cotización ya no está pendiente" });
   }
 
+  // Mecánico no puede cerrar reparaciones (solo admin puede cerrar)
+  if (role === "mecanico" && entityKey === "reparaciones" && payload.estado === "Cerrada") {
+    return res.status(403).json({ error: "Solo el administrador puede cerrar reparaciones" });
+  }
+
   try {
-    // Si es reparación y se está cerrando, registrar el ingreso automáticamente
+    // Si es reparación y se está cerrando, registrar el ingreso automáticamente (solo admin)
     if (entityKey === "reparaciones" && payload.estado === "Cerrada") {
       const repBefore = dbSelectOne(`SELECT estado, costo_total, cliente_id, vehiculo_id FROM reparaciones WHERE id = ?`, [id]);
       if (repBefore && repBefore.estado !== "Cerrada" && repBefore.costo_total > 0) {
