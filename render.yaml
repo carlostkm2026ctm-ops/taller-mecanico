@@ -4,8 +4,14 @@ services:
     runtime: node
     buildCommand: npm install
     startCommand: npm start
+    disk:
+      name: data
+      mountPath: /data
+      sizeGB: 1
     envVars:
       - key: NODE_ENV
         value: production
       - key: JWT_SECRET
         generateValue: true
+      - key: DB_PATH
+        value: /data/taller.sqlite
