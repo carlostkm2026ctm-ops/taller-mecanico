@@ -252,75 +252,92 @@
     <!-- Estilos responsive para móvil -->
     <style>
       @media (max-width: 768px) {
-        .appShell {
-          grid-template-columns: 1fr;
-          gap: 16px;
-          padding: 16px;
+        body {
+          overflow-x: hidden;
         }
         
-        .sidebar {
-          position: static;
-          order: -1;
-          max-height: none;
+        .container {
+          padding: 8px;
+          max-width: 100vw;
+          overflow-x: hidden;
         }
         
-        .main {
-          padding: 16px;
+        .card {
+          border-radius: 12px;
+          margin: 0;
         }
         
         .mechanic-header {
-          padding: 20px 16px;
+          padding: 16px 12px;
+        }
+        
+        .mechanic-header .row-between {
+          flex-direction: column;
+          gap: 16px;
+        }
+        
+        .mechanic-header .row {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+        
+        .mechanic-header .login-logo {
+          margin-right: 0 !important;
+          margin-bottom: 12px;
         }
         
         .mechanic-title {
-          font-size: 22px;
+          font-size: 20px;
+        }
+        
+        .mechanic-subtitle {
+          font-size: 13px;
         }
         
         .stats-row {
           grid-template-columns: repeat(3, 1fr);
           gap: 8px;
+          padding: 0 8px;
         }
         
         .stat-item {
-          padding: 12px 8px;
+          padding: 12px 4px;
+          min-width: 0;
         }
         
         .stat-number {
-          font-size: 20px;
+          font-size: 24px;
         }
         
         .stat-label {
-          font-size: 11px;
+          font-size: 10px;
+          text-transform: uppercase;
         }
         
-        /* Tabla responsive */
-        .tableWrap {
+        /* Tabla responsive con scroll */
+        #content {
           overflow-x: auto;
           -webkit-overflow-scrolling: touch;
+          padding: 0 8px;
         }
         
-        table {
+        #content table {
+          width: auto;
           min-width: 100%;
-          font-size: 14px;
+          font-size: 13px;
         }
         
-        th, td {
+        #content th,
+        #content td {
           padding: 10px 8px;
           white-space: nowrap;
+          min-width: 80px;
         }
         
-        /* Modal responsive */
-        .modal {
-          width: 95%;
-          max-width: none;
-          margin: 16px;
-          max-height: 90vh;
-          overflow-y: auto;
-        }
-        
-        .modalOverlay {
-          padding: 0;
-          align-items: flex-end;
+        #content th:first-child,
+        #content td:first-child {
+          min-width: 120px;
         }
         
         /* Botones más grandes para tocar */
@@ -329,12 +346,49 @@
           padding: 12px 16px;
         }
         
+        .btn-sm {
+          padding: 8px 12px;
+          font-size: 12px;
+        }
+        
+        /* Modal responsive */
+        .modalOverlay {
+          padding: 16px;
+          align-items: center;
+        }
+        
+        .modal {
+          width: 100%;
+          max-width: none;
+          margin: 0;
+          max-height: 85vh;
+          overflow-y: auto;
+          border-radius: 16px;
+        }
+        
+        .modalHeader {
+          padding: 16px;
+        }
+        
+        .modalBody {
+          padding: 16px;
+        }
+        
         /* Formularios más anchos */
         .field input,
         .field select,
         .field textarea {
-          font-size: 16px; /* Previene zoom en iOS */
+          font-size: 16px;
           padding: 12px;
+        }
+        
+        .row-between {
+          flex-direction: column;
+          gap: 12px;
+        }
+        
+        .row-between .btn {
+          width: 100%;
         }
       }
       
