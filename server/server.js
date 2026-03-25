@@ -1055,5 +1055,10 @@ app.delete("/api/admin/users/:id", authRequired, (req, res) => {
 const publicDir = path.join(__dirname, "..", "public");
 app.use(express.static(publicDir));
 
+// Ruta específica para app.html
+app.get('/app.html', (req, res) => {
+  res.sendFile(path.join(publicDir, 'app.html'));
+});
+
 app.use((req, res) => res.status(404).send("Ruta no encontrada"));
 
