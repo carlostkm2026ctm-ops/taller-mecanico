@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1a1a1a" />
+  <title>Presupuesto - Taller Pro</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .public-wrap { max-width: 760px; margin: 0 auto; padding: 28px 18px 48px; }
+    .public-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--shadow-md); }
+    .public-head { padding: 18px 18px; background: rgba(0,0,0,.18); border-bottom: 1px solid var(--border-color); display:flex; justify-content: space-between; align-items:center; gap: 12px; }
+    .public-head h1 { font-size: 1.05rem; margin: 0; display:flex; align-items:center; gap:10px; }
+    .public-head .chip { padding: 6px 10px; border-radius: 999px; font-weight: 800; font-size: .75rem; border: 1px solid var(--border-color); color: var(--text-secondary); background: rgba(255,255,255,.03); white-space: nowrap; }
+    .public-body { padding: 18px; display: grid; gap: 12px; }
+    .kv { display:grid; grid-template-columns: 1fr; gap: 8px; }
+    .kv-row { display:flex; justify-content: space-between; gap: 10px; padding: 10px 12px; border-radius: 14px; border: 1px solid var(--border-color); background: rgba(0,0,0,.16); }
+    .kv-row span:first-child { color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; font-size: .72rem; font-weight: 700; }
+    .kv-row b { font-variant-numeric: tabular-nums; }
+    .public-note { padding: 12px 12px; border-radius: 14px; border: 1px solid var(--border-color); background: rgba(0,0,0,.12); color: var(--text-secondary); }
+    .public-actions { display:grid; grid-template-columns: 1fr; gap: 10px; margin-top: 6px; }
+    @media (min-width: 520px){ .public-actions{ grid-template-columns: 1fr 1fr; } }
+    .btn-public { width: 100%; padding: 0.95rem 1rem; border-radius: 14px; font-weight: 900; border: 0; cursor: pointer; transition: transform .15s ease, box-shadow .15s ease; }
+    .btn-public:disabled { opacity: .6; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+    .btn-accept { background: linear-gradient(135deg, var(--success-neon), #10b981); color: var(--bg-primary); box-shadow: 0 10px 24px rgba(0,255,136,.18); }
+    .btn-accept:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(0,255,136,.24); }
+    .btn-reject { background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff; box-shadow: 0 10px 24px rgba(239,68,68,.16); }
+    .btn-reject:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(239,68,68,.22); }
+    .public-footer { padding: 14px 18px; border-top: 1px solid var(--border-color); background: rgba(0,0,0,.14); color: var(--text-muted); font-size: .85rem; display:flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    .public-status { font-weight: 900; }
+  </style>
+</head>
+<body>
+  <div class="public-wrap">
+    <div class="public-card">
+      <div class="public-head">
+        <h1><i class="fas fa-file-invoice-dollar" style="color:#f59e0b;"></i> Presupuesto</h1>
+        <span class="chip" id="chipPatente">-</span>
+      </div>
+
+      <div class="public-body">
+        <div class="empty-state" id="estadoCarga" style="padding: 22px 12px;">
+          <i class="fas fa-spinner fa-spin"></i>
+          <p>Cargando…</p>
+        </div>
+
+        <div id="contenido" class="hidden">
+          <div id="resultado" class="public-note hidden" style="border-color: rgba(255,255,255,.10);">
+            <div id="resultadoTitulo" style="font-weight:900; color: var(--text-primary); margin-bottom: 4px;"></div>
+            <div id="resultadoDetalle" style="color: var(--text-secondary);"></div>
+          </div>
+
+          <div class="kv">
+            <div class="kv-row"><span>Vehículo</span><b id="vehiculo">-</b></div>
+            <div class="kv-row"><span>Cliente</span><b id="cliente">-</b></div>
+            <div class="kv-row"><span>Teléfono</span><b id="telefono">-</b></div>
+            <div class="kv-row"><span>Monto</span><b id="monto">-</b></div>
+          </div>
+
+          <div class="public-note">
+            <div style="font-weight:800; margin-bottom: 6px; color: var(--text-primary);">Falla declarada</div>
+            <div id="falla" style="white-space: pre-wrap;"></div>
+          </div>
+
+          <div class="public-note" id="repuestosBox">
+            <div style="font-weight:800; margin-bottom: 6px; color: var(--text-primary);">Repuestos / trabajo</div>
+            <div id="repuestos" style="white-space: pre-wrap;"></div>
+          </div>
+
+          <div class="public-actions">
+            <button class="btn-public btn-accept" id="btnAceptar" type="button">
+              <i class="fas fa-check-circle"></i> Aceptar
+            </button>
+            <button class="btn-public btn-reject" id="btnRechazar" type="button">
+              <i class="fas fa-times-circle"></i> Rechazar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="public-footer">
+        <span>Si tienes dudas, responde este WhatsApp.</span>
+        <span class="public-status" id="estadoPresupuesto">—</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="presupuesto.js?v=20260427-2"></script>
+</body>
+</html>
+

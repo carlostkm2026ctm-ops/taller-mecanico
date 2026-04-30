@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1a1f2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Taller Mecánico Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-container">
+            <div class="login-brand">
+                <i class="fas fa-wrench"></i>
+                <h1>Taller Pro</h1>
+                <p>Sistema de Gestión de Taller Mecánico</p>
+            </div>
+            
+            <form id="loginForm" class="login-form">
+                <div class="input-group">
+                    <label for="loginEmail">Correo Electrónico</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="loginEmail" required placeholder="ejemplo@taller.cl">
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="loginPassword">Contraseña</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="loginPassword" required placeholder="••••••••">
+                        <button type="button" class="btn-toggle-password" id="btnTogglePassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-login">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </button>
+            </form>
+            
+            <div class="login-footer">
+                <p>¿No tienes cuenta? Contacta al administrador</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App (hidden until login) -->
+    <div id="mainApp" class="main-app hidden">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon">
+                <i class="fas fa-wrench"></i>
+            </div>
+            <div class="brand-text">
+                <h1>Taller Pro</h1>
+                <span>Sistema de Gestión</span>
+            </div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <span class="nav-label">Principal</span>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#dashboard" class="nav-link active" data-section="dashboard">
+                            <i class="fas fa-chart-pie"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" id="navNuevaOrden">
+                        <a href="#nueva-orden" class="nav-link" data-section="nueva-orden">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Nueva Orden</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#ordenes" class="nav-link" data-section="ordenes">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Órdenes Activas</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#historial" class="nav-link" data-section="historial">
+                            <i class="fas fa-history"></i>
+                            <span>Historial</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="nav-section admin-only hidden">
+                <span class="nav-label">Administración</span>
+                <ul class="nav-list">
+                    <li class="nav-item admin-jefe-only">
+                        <a href="#ingresos" class="nav-link" data-section="ingresos">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Ingresos</span>
+                        </a>
+                    </li>
+                    <li class="nav-item admin-jefe-only">
+                        <a href="#equipo" class="nav-link" data-section="equipo">
+                            <i class="fas fa-hard-hat"></i>
+                            <span>Equipo de Trabajo</span>
+                        </a>
+                    </li>
+                    <li class="nav-item admin-jefe-only">
+                        <a href="#clientes" class="nav-link" data-section="clientes">
+                            <i class="fas fa-users"></i>
+                            <span>Clientes Frecuentes</span>
+                        </a>
+                    </li>
+                    <li class="nav-item admin-jefe-only">
+                        <a href="#agenda" class="nav-link" data-section="agenda">
+                            <i class="fas fa-calendar-check"></i>
+                            <span>Agenda</span>
+                        </a>
+                    </li>
+                    <li class="nav-item admin-only">
+                        <a href="#admin" class="nav-link" data-section="admin">
+                            <i class="fas fa-users-cog"></i>
+                            <span>Administración</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <span id="userName" class="user-name">Usuario</span>
+                    <span id="userRole" class="user-role">Rol</span>
+                </div>
+            </div>
+            <button class="btn-logout" id="btnLogout">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Cerrar Sesión</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+        <button class="btn-menu-toggle" id="btnMenu">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="mobile-brand">
+            <i class="fas fa-wrench"></i>
+            <span>Taller Pro</span>
+        </div>
+        <div class="mobile-spacer"></div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section active">
+            <h2 class="section-title">Dashboard</h2>
+            
+            <!-- Estadísticas de Órdenes -->
+            <div class="stats-grid stats-grid-5">
+                <div class="stat-card stat-ingresado">
+                    <div class="stat-icon"><i class="fas fa-car"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="countIngresado">0</span>
+                        <span class="stat-label">Ingresados</span>
+                    </div>
+                </div>
+                <div class="stat-card stat-reparacion">
+                    <div class="stat-icon"><i class="fas fa-tools"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="countReparacion">0</span>
+                        <span class="stat-label">En Reparación</span>
+                    </div>
+                </div>
+                <div class="stat-card stat-espera">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="countEspera">0</span>
+                        <span class="stat-label">Esperando Repuestos</span>
+                    </div>
+                </div>
+                <div class="stat-card stat-listo">
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="countListo">0</span>
+                        <span class="stat-label">Listos para Entrega</span>
+                    </div>
+                </div>
+                <div class="stat-card stat-entregado">
+                    <div class="stat-icon"><i class="fas fa-handshake"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="countEntregado">0</span>
+                        <span class="stat-label">Entregados</span>
+                    </div>
+                </div>
+                <!-- Caja Diaria -->
+                <div class="stat-card stat-caja admin-jefe-only">
+                    <div class="stat-icon"><i class="fas fa-cash-register"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="ingresosDia">$0</span>
+                        <span class="stat-label">Ingresos del Día</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIONES ADMIN ONLY -->
+            <div class="admin-dashboard admin-only hidden">
+                
+                <!-- Gestión de Trabajadores -->
+                <div class="dashboard-card card-trabajadores">
+                    <div class="card-header">
+                        <div class="card-icon"><i class="fas fa-hard-hat"></i></div>
+                        <h3>Equipo de Trabajo</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="trabajadores-list" id="trabajadoresList">
+                            <!-- Se carga dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección de Clientes -->
+                <div class="dashboard-card card-clientes">
+                    <div class="card-header">
+                        <div class="card-icon"><i class="fas fa-users"></i></div>
+                        <h3>Clientes Frecuentes</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="clientes-search">
+                            <div class="input-with-icon">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="searchClientes" placeholder="Buscar cliente...">
+                            </div>
+                        </div>
+                        <div class="clientes-list" id="clientesList">
+                            <!-- Se carga dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gastos del Taller -->
+                <div class="dashboard-card card-gastos">
+                    <div class="card-header">
+                        <div class="card-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+                        <h3>Gastos del Taller</h3>
+                        <button class="btn btn-small btn-primary" onclick="abrirModalGasto()">
+                            <i class="fas fa-plus"></i> Agregar Gasto
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="gasto-resumen">
+                            <div class="gasto-item">
+                                <span class="gasto-label">Gastos del Día</span>
+                                <span class="gasto-monto" id="gastosDia">$0</span>
+                            </div>
+                            <div class="gasto-item">
+                                <span class="gasto-label">Gastos del Mes</span>
+                                <span class="gasto-monto" id="gastosMes">$0</span>
+                            </div>
+                        </div>
+                        <div class="utilidad-real">
+                            <span class="utilidad-label">Utilidad Real (Ingresos - Gastos)</span>
+                            <span class="utilidad-monto" id="utilidadReal">$0</span>
+                        </div>
+                        <div class="gastos-breakdown">
+                            <div class="breakdown-col">
+                                <div class="breakdown-title">
+                                    <i class="fas fa-car"></i> Ganancias por auto (hoy)
+                                </div>
+                                <div class="breakdown-list" id="gananciasLista">
+                                    <p class="sin-gastos">Sin ingresos registrados hoy</p>
+                                </div>
+                                <div class="breakdown-total">
+                                    <span>Total</span>
+                                    <strong id="gananciasTotal">$0</strong>
+                                </div>
+                            </div>
+                            <div class="breakdown-col">
+                                <div class="breakdown-title">
+                                    <i class="fas fa-user-wrench"></i> Pagos a mecánicos (hoy)
+                                </div>
+                                <div class="breakdown-list" id="pagosMecanicosLista">
+                                    <p class="sin-gastos">Sin pagos registrados hoy</p>
+                                </div>
+                                <div class="breakdown-total">
+                                    <span>Total</span>
+                                    <strong id="pagosMecanicosTotal">$0</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gastos-lista" id="gastosLista">
+                            <!-- Lista de gastos recientes -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="quick-actions">
+                <h3>Acciones Rápidas</h3>
+                <button class="btn btn-primary btn-large" onclick="showSection('nueva-orden')">
+                    <i class="fas fa-plus"></i> Nueva Orden de Trabajo
+                </button>
+                <button class="btn btn-secondary btn-large" onclick="showSection('historial')">
+                    <i class="fas fa-search"></i> Buscar por Patente
+                </button>
+            </div>
+        </section>
+
+        <!-- Nueva Orden Section -->
+        <section id="nueva-orden" class="section">
+            <h2 class="section-title">Nueva Orden de Trabajo</h2>
+            
+            <!-- Buscador Inteligente por Patente -->
+            <div class="buscador-patente-container">
+                <div class="input-group buscador-patente">
+                    <label for="buscarPatenteNuevaOrden"><i class="fas fa-search"></i> Buscar por Patente (Autocompletar)</label>
+                    <input type="text" id="buscarPatenteNuevaOrden" 
+                           placeholder="Ingrese patente para buscar historial..."
+                           title="Ingrese una patente existente para autocompletar datos">
+                    <small>Si la patente existe, se autocompletarán los datos del cliente y vehículo</small>
+                </div>
+                <div id="resultadoBusquedaPatente" class="resultado-busqueda-patente"></div>
+            </div>
+            
+            <form id="formNuevaOrden" class="form-orden">
+                <!-- Datos del Cliente -->
+                <div class="form-group">
+                    <h3><i class="fas fa-user"></i> Datos del Cliente</h3>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="clienteNombre">Nombre del Cliente *</label>
+                            <input type="text" id="clienteNombre" required placeholder="Ej: Juan Pérez">
+                        </div>
+                        <div class="input-group">
+                            <label for="clienteRut">RUT Cliente</label>
+                            <input type="text" id="clienteRut" placeholder="Ej: 12.345.678-9">
+                        </div>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="clienteTelefono">Teléfono *</label>
+                            <input type="tel" id="clienteTelefono" required placeholder="Ej: +56 9 1234 5678">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Datos del Vehículo -->
+                <div class="form-group">
+                    <h3><i class="fas fa-car"></i> Datos del Vehículo</h3>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="vehiculoPatente">Patente *</label>
+                            <input type="text" id="vehiculoPatente" required 
+                                   placeholder="Ej: AB-CD-12" 
+                                   title="Formato: AB-CD-12 o ABCD12">
+                            <small>Formato chileno: AB-CD-12</small>
+                        </div>
+                        <div class="input-group">
+                            <label for="vehiculoMarca">Marca/Modelo *</label>
+                            <input type="text" id="vehiculoMarca" required placeholder="Ej: Toyota Corolla 2020">
+                        </div>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="vehiculoKilometraje">Kilometraje *</label>
+                            <input type="number" id="vehiculoKilometraje" required placeholder="Ej: 45000" min="0">
+                        </div>
+                        <div class="input-group">
+                            <label for="ordenEstado">Estado Inicial</label>
+                            <select id="ordenEstado">
+                                <option value="ingresado">Ingresado</option>
+                                <option value="reparacion">En Reparación</option>
+                                <option value="espera">Esperando Repuestos</option>
+                                <option value="listo">Listo para Entrega</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detalles de la Orden -->
+                <div class="form-group">
+                    <h3><i class="fas fa-clipboard"></i> Detalles de la Orden</h3>
+                    <div class="input-group">
+                        <label for="fallaDeclarada">Falla Declarada *</label>
+                        <textarea id="fallaDeclarada" rows="3" required 
+                                  placeholder="Describa la falla que reporta el cliente..."></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label for="repuestosUsados">Repuestos a Usar</label>
+                        <textarea id="repuestosUsados" rows="2" 
+                                  placeholder="Liste los repuestos necesarios..."></textarea>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="presupuesto">Presupuesto ($)</label>
+                            <input type="number" id="presupuesto" placeholder="Ej: 150000" min="0">
+                        </div>
+                        <div class="input-group admin-edit-only">
+                            <label for="pagoMecanico">Pago al Mecánico ($)</label>
+                            <input type="number" id="pagoMecanico" placeholder="Ej: 40000" min="0">
+                            <small>Visible solo para Administrador/Jefe. El mecánico verá solo este monto.</small>
+                        </div>
+                        <div class="input-group">
+                            <label for="fechaIngreso">Fecha de Ingreso</label>
+                            <input type="date" id="fechaIngreso">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="tiempoEntrega">Tiempo Estimado de Entrega</label>
+                        <input type="text" id="tiempoEntrega" placeholder="Ej: 3 días hábiles, 1 semana, etc.">
+                    </div>
+                </div>
+
+                <!-- CHECK-LIST DE RECEPCION -->
+                <div class="form-section">
+                    <h3 class="section-subtitle"><i class="fas fa-clipboard-check"></i> Check-list de Recepción</h3>
+                    
+                    <div class="input-group">
+                        <label for="nivelCombustible">Nivel de Combustible</label>
+                        <select id="nivelCombustible">
+                            <option value="">Seleccionar nivel...</option>
+                            <option value="E">E (Vacío)</option>
+                            <option value="1/4">1/4</option>
+                            <option value="1/2">1/2</option>
+                            <option value="3/4">3/4</option>
+                            <option value="F">F (Lleno)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="estadoExterior">Estado Exterior (Rayones/Choques)</label>
+                        <textarea id="estadoExterior" rows="2" 
+                                  placeholder="Describa rayones, abolladuras, daños visibles..."></textarea>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="objetosValor">Objetos de Valor en el Vehículo</label>
+                        <textarea id="objetosValor" rows="2" 
+                                  placeholder="Liste objetos de valor que deja el cliente: radios, GPS, herramientas, etc."></textarea>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="showSection('dashboard')">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Guardar Orden
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Órdenes Activas Section -->
+        <section id="ordenes" class="section">
+            <h2 class="section-title">Órdenes Activas</h2>
+            
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label>Filtrar por estado:</label>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="todos">Todos</button>
+                        <button class="filter-btn" data-filter="ingresado">Ingresados</button>
+                        <button class="filter-btn" data-filter="reparacion">En Reparación</button>
+                        <button class="filter-btn" data-filter="espera">Esperando</button>
+                        <button class="filter-btn" data-filter="listo">Listos</button>
+                        <button class="filter-btn" data-filter="entregado">Entregados</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ordenes-list" id="ordenesList">
+                <!-- Las órdenes se cargan dinámicamente -->
+                <div class="empty-state">
+                    <i class="fas fa-clipboard-list"></i>
+                    <p>No hay órdenes activas</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Historial Section -->
+        <section id="historial" class="section">
+            <h2 class="section-title">Historial de Vehículos</h2>
+            
+            <div class="search-box">
+                <div class="search-input-group">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchPatente" 
+                           placeholder="Buscar por patente (Ej: AB-CD-12)..."
+                           maxlength="10">
+                    <button class="btn btn-primary" id="btnBuscar">
+                        <i class="fas fa-search"></i> Buscar
+                    </button>
+                </div>
+            </div>
+
+            <div class="historial-results" id="historialResults">
+                <div class="empty-state">
+                    <i class="fas fa-history"></i>
+                    <p>Ingrese una patente para buscar el historial</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN INGRESOS (Solo Admin) -->
+        <section id="ingresos" class="section admin-jefe-only">
+            <h2 class="section-title">Ingresos del Taller</h2>
+            
+            <div class="ingresos-resumen">
+                <div class="resumen-card">
+                    <i class="fas fa-dollar-sign"></i>
+                    <div>
+                        <span class="resumen-label">Total Ingresos</span>
+                        <span class="resumen-monto" id="ingresosTotal">$0</span>
+                    </div>
+                </div>
+                <div class="resumen-card">
+                    <i class="fas fa-calendar-day"></i>
+                    <div>
+                        <span class="resumen-label">Ingresos del Día</span>
+                        <span class="resumen-monto" id="ingresosDia">$0</span>
+                    </div>
+                </div>
+                <div class="resumen-card">
+                    <i class="fas fa-calendar-week"></i>
+                    <div>
+                        <span class="resumen-label">Esta Semana</span>
+                        <span class="resumen-monto" id="ingresosSemanaActual">$0</span>
+                    </div>
+                </div>
+                <div class="resumen-card">
+                    <i class="fas fa-receipt"></i>
+                    <div>
+                        <span class="resumen-label">Órdenes Pagadas / Pendientes</span>
+                        <span class="resumen-monto">
+                            <span id="ordenesPagadas">0</span>
+                            <span style="opacity:.5;">/</span>
+                            <span id="ordenesPendientes">0</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="resumen-card">
+                    <i class="fas fa-hand-holding-dollar"></i>
+                    <div>
+                        <span class="resumen-label">Costo de Nómina (Pendiente)</span>
+                        <span class="resumen-monto" id="costoNomina">$0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <h3>Detalle de Ingresos</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Patente</th>
+                            <th>Servicio</th>
+                            <th>Mecánico</th>
+                            <th>Pago a Mecánico</th>
+                            <th>Monto Cobrado</th>
+                            <th>Método</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ingresosTableBody">
+                        <tr>
+                            <td colspan="9" class="text-center">
+                                <div class="empty-state" style="padding: 2rem;">
+                                    <i class="fas fa-receipt"></i>
+                                    <p>No hay ingresos registrados</p>
+                                    <small>Los ingresos se agregarán automáticamente al confirmar cobros</small>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SECCIÓN EQUIPO DE TRABAJO (Solo Admin) -->
+        <section id="equipo" class="section admin-jefe-only">
+            <h2 class="section-title">Equipo de Trabajo</h2>
+            
+            <div class="equipo-grid" id="equipoGrid">
+                <!-- Los mecánicos se cargarán dinámicamente desde Supabase -->
+                <div class="empty-state">
+                    <i class="fas fa-users"></i>
+                    <p>Cargando equipo de trabajo...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN CLIENTES (Solo Admin) -->
+        <section id="clientes" class="section admin-jefe-only">
+            <h2 class="section-title">Clientes Frecuentes</h2>
+            
+            <div class="clientes-busqueda">
+                <div class="input-with-icon">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="buscarCliente" placeholder="Buscar cliente por nombre o teléfono...">
+                </div>
+            </div>
+
+            <div class="clientes-stats" id="clientesStats">
+                <div class="cliente-stat-card">
+                    <span class="stat-numero" id="totalClientes">-</span>
+                    <span class="stat-label">Clientes Registrados</span>
+                </div>
+                <div class="cliente-stat-card">
+                    <span class="stat-numero" id="clientesFrecuentes">-</span>
+                    <span class="stat-label">Clientes Frecuentes</span>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Teléfono</th>
+                            <th>Patente</th>
+                            <th>Vehículo</th>
+                            <th>Última Visita</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clientesTableBody">
+                        <!-- Los clientes se cargarán dinámicamente -->
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                <div class="empty-state" style="padding: 2rem;">
+                                    <i class="fas fa-users"></i>
+                                    <p>Cargando clientes...</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SECCIÓN AGENDA (Solo Admin/Jefe) -->
+        <section id="agenda" class="section admin-jefe-only">
+            <h2 class="section-title">Agenda</h2>
+
+            <div class="dashboard-card" style="margin-bottom: var(--spacing-lg);">
+                <div class="card-header">
+                    <div class="card-icon"><i class="fas fa-calendar-check"></i></div>
+                    <h3>Agendar cita</h3>
+                </div>
+                <div class="card-body">
+                    <form id="formAgenda" class="form-orden">
+                        <div class="input-row" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+                            <div class="input-group">
+                                <label for="agendaFecha">Fecha *</label>
+                                <input type="date" id="agendaFecha" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="agendaHora">Hora *</label>
+                                <input type="time" id="agendaHora" required>
+                            </div>
+                        </div>
+                        <div class="input-row" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+                            <div class="input-group">
+                                <label for="agendaCliente">Cliente *</label>
+                                <input type="text" id="agendaCliente" required placeholder="Ej: Juan Pérez">
+                            </div>
+                            <div class="input-group">
+                                <label for="agendaTelefono">Teléfono</label>
+                                <input type="tel" id="agendaTelefono" placeholder="Ej: +56 9 1234 5678">
+                            </div>
+                            <div class="input-group">
+                                <label for="agendaPatente">Patente</label>
+                                <input type="text" id="agendaPatente" placeholder="Ej: AB-CD-12">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="agendaDescripcion">Descripción</label>
+                            <textarea id="agendaDescripcion" rows="3" placeholder="Ej: diagnóstico, cambio de aceite, revisar frenos..."></textarea>
+                        </div>
+                        <div class="input-row" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+                            <div class="input-group">
+                                <label for="agendaEstado">Estado</label>
+                                <select id="agendaEstado">
+                                    <option value="pendiente">Pendiente</option>
+                                    <option value="confirmada">Confirmada</option>
+                                    <option value="completada">Completada</option>
+                                    <option value="cancelada">Cancelada</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="reset" class="btn btn-secondary">
+                                <i class="fas fa-broom"></i> Limpiar
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Guardar cita
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="fas fa-list"></i></div>
+                    <h3>Citas del día</h3>
+                    <div class="input-with-icon" style="max-width: 260px;">
+                        <i class="fas fa-calendar-day"></i>
+                        <input type="date" id="agendaFiltroFecha">
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="agendaLista">
+                        <div class="empty-state" style="padding: 2rem;">
+                            <i class="fas fa-calendar-check"></i>
+                            <p>Selecciona una fecha para ver citas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN ADMINISTRACIÓN (Solo Admin) -->
+        <section id="admin" class="section admin-only">
+            <h2 class="section-title">Administración de Usuarios</h2>
+            
+            <div class="admin-container">
+                <div class="admin-form-card">
+                    <h3><i class="fas fa-user-plus"></i> Crear Nuevo Usuario</h3>
+                    <form id="formCrearUsuario" class="admin-form">
+                        <div class="input-group">
+                            <label for="adminNombre">Nombre Completo</label>
+                            <input type="text" id="adminNombre" required placeholder="Ej: Juan Pérez">
+                        </div>
+                        <div class="input-group">
+                            <label for="adminEmail">Correo Electrónico</label>
+                            <input type="email" id="adminEmail" required placeholder="ejemplo@taller.cl">
+                        </div>
+                        <div class="input-group">
+                            <label for="adminPassword">Contraseña</label>
+                            <input type="password" id="adminPassword" required placeholder="Mínimo 6 caracteres" minlength="6">
+                        </div>
+                        <div class="input-group">
+                            <label for="adminRol">Rol del Usuario</label>
+                            <select id="adminRol" required>
+                                <option value="">Seleccionar rol...</option>
+                                <option value="admin">Administrador (Dueño)</option>
+                                <option value="jefe">Jefe de Taller</option>
+                                <option value="mecanico">Mecánico</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">
+                            <i class="fas fa-save"></i> Crear Usuario
+                        </button>
+                    </form>
+                </div>
+
+                <div class="admin-list-card">
+                    <h3><i class="fas fa-users"></i> Usuarios del Sistema</h3>
+                    <div class="usuarios-admin-list" id="usuariosAdminList">
+                        <div class="empty-state" style="padding: 2rem;">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Cargando usuarios...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Usuarios Section (Solo Admin) - DEPRECATED -->
+        <section id="admin-usuarios" class="section admin-only hidden">
+            <h2 class="section-title">Administración de Usuarios</h2>
+            
+            <div class="admin-actions">
+                <button class="btn btn-primary" id="btnNuevoUsuario">
+                    <i class="fas fa-user-plus"></i> Crear Nuevo Usuario
+                </button>
+            </div>
+
+            <div class="users-list" id="usersList">
+                <div class="empty-state">
+                    <i class="fas fa-users"></i>
+                    <p>Cargando usuarios...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reportes Section (Solo Admin) - DEPRECATED -->
+        <section id="reportes" class="section admin-only hidden">
+            <h2 class="section-title">Reportes Financieros</h2>
+            
+            <div class="reportes-grid">
+                <div class="reporte-card">
+                    <h3>Ingresos del Mes</h3>
+                    <div class="reporte-monto" id="reporteIngresosMes">$0</div>
+                    <small>Total en presupuestos aprobados</small>
+                </div>
+                <div class="reporte-card">
+                    <h3>Órdenes Completadas</h3>
+                    <div class="reporte-monto" id="reporteOrdenesCompletadas">0</div>
+                    <small>Este mes</small>
+                </div>
+                <div class="reporte-card">
+                    <h3>Promedio por Orden</h3>
+                    <div class="reporte-monto" id="reportePromedioOrden">$0</div>
+                    <small>Valor promedio</small>
+                </div>
+            </div>
+
+            <div class="reporte-detalle">
+                <h3>Detalle de Ingresos</h3>
+                <div class="table-container">
+                    <table class="data-table" id="tablaIngresos">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Patente</th>
+                                <th>Cliente</th>
+                                <th>Servicio</th>
+                                <th>Monto</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyIngresos">
+                            <!-- Se carga dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    </div><!-- End mainApp -->
+
+    <!-- Modal para Editar Orden -->
+    <div class="modal" id="modalEditar">
+        <div class="modal-content modal-editar-orden">
+            <div class="modal-header">
+                <h3><i class="fas fa-edit"></i> Editar Orden</h3>
+                <div style="display:flex; align-items:center; gap: .5rem;">
+                    <button type="button" class="btn btn-small btn-primary admin-edit-only" id="btnImprimirFactura" title="Imprimir factura/cotización">
+                        <i class="fas fa-print"></i> Factura
+                    </button>
+                    <button type="button" class="btn btn-small btn-success admin-edit-only" id="btnEnviarFacturaWA" title="Enviar documento por WhatsApp (link público)">
+                        <i class="fab fa-whatsapp"></i> Enviar
+                    </button>
+                    <button type="button" class="btn btn-small btn-secondary admin-edit-only" id="btnLinkFirmaRecepcion" title="Generar link de firma (recepción)">
+                        <i class="fas fa-signature"></i> Firma Recepción
+                    </button>
+                    <button type="button" class="btn btn-small btn-secondary admin-edit-only" id="btnLinkFirmaEntrega" title="Generar link de firma (entrega)">
+                        <i class="fas fa-signature"></i> Firma Entrega
+                    </button>
+                    <button class="btn-close" id="btnCloseModal"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <form id="formEditarOrden" class="modal-editar-orden-form">
+                    <input type="hidden" id="editId">
+
+                    <!-- Información del Vehículo -->
+                    <div class="form-section-card modal-editar-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-car"></i>
+                            <span>Información del Vehículo</span>
+                        </div>
+                        <div class="form-grid two-cols form-grid-relaxed">
+                            <div class="field with-icon">
+                                <label for="editVehiculoPatente">Patente</label>
+                                <div class="input-icon-wrap">
+                                    <i class="fas fa-id-card"></i>
+                                    <input type="text" id="editVehiculoPatente" readonly>
+                                </div>
+                            </div>
+                            <div class="field with-icon">
+                                <label for="editVehiculoMarca">Marca</label>
+                                <div class="input-icon-wrap">
+                                    <i class="fas fa-industry"></i>
+                                    <input type="text" id="editVehiculoMarca" readonly>
+                                </div>
+                            </div>
+                            <div class="field with-icon">
+                                <label for="editVehiculoModelo">Modelo</label>
+                                <div class="input-icon-wrap">
+                                    <i class="fas fa-car-side"></i>
+                                    <input type="text" id="editVehiculoModelo" readonly>
+                                </div>
+                            </div>
+                            <div class="field with-icon admin-edit-only">
+                                <label for="editMecanicoAsignado">Mecánico asignado</label>
+                                <div class="input-icon-wrap">
+                                    <i class="fas fa-user-cog"></i>
+                                    <select id="editMecanicoAsignado">
+                                        <option value="">Sin asignar</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detalles del Servicio -->
+                    <div class="form-section-card modal-editar-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-screwdriver-wrench"></i>
+                            <span>Detalles del Servicio</span>
+                        </div>
+                        <div class="form-grid one-col form-grid-relaxed">
+                            <div class="field with-icon admin-edit-only">
+                                <label for="editFalla">Descripción del problema</label>
+                                <div class="input-icon-wrap textarea">
+                                    <i class="fas fa-triangle-exclamation"></i>
+                                    <textarea id="editFalla" rows="3" placeholder="Describe la falla reportada..."></textarea>
+                                </div>
+                            </div>
+                            <div class="field with-icon mecanico-edit-allowed">
+                                <label for="editRepuestos">Servicio realizado / repuestos usados</label>
+                                <div class="input-icon-wrap textarea">
+                                    <i class="fas fa-tools"></i>
+                                    <textarea id="editRepuestos" rows="3" placeholder="Detalle del trabajo realizado..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gestión de Taller -->
+                    <div class="form-section-card modal-editar-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-clipboard-check"></i>
+                            <span>Gestión de Taller</span>
+                        </div>
+                        <div class="form-grid one-col form-grid-relaxed">
+                            <div class="field with-icon">
+                                <label>Estado de la orden</label>
+                                <div class="estado-selector compact estado-selector-modal">
+                                    <button type="button" class="estado-btn" data-estado="ingresado">
+                                        <i class="fas fa-car"></i>
+                                        <span>Ingresado</span>
+                                    </button>
+                                    <button type="button" class="estado-btn" data-estado="reparacion">
+                                        <i class="fas fa-tools"></i>
+                                        <span>Reparación</span>
+                                    </button>
+                                    <button type="button" class="estado-btn" data-estado="espera">
+                                        <i class="fas fa-clock"></i>
+                                        <span>Espera</span>
+                                    </button>
+                                    <button type="button" class="estado-btn" data-estado="listo">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Listo</span>
+                                    </button>
+                                </div>
+                                <input type="hidden" id="editEstado">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Firmas -->
+                    <div class="form-section-card modal-editar-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-signature"></i>
+                            <span>Firmas</span>
+                        </div>
+                        <div class="firmas-grid">
+                            <div class="firma-card">
+                                <div class="firma-card-head">
+                                    <strong>Recepción</strong>
+                                    <span class="firma-badge" id="badgeFirmaRecepcion">Pendiente</span>
+                                </div>
+                                <div class="firma-card-body">
+                                    <div class="firma-fecha" id="fechaFirmaRecepcion">—</div>
+                                    <div class="firma-actions">
+                                        <button type="button" class="btn btn-small btn-secondary" id="btnVerFirmaRecepcion">
+                                            <i class="fas fa-eye"></i> Ver
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="firma-card">
+                                <div class="firma-card-head">
+                                    <strong>Entrega</strong>
+                                    <span class="firma-badge" id="badgeFirmaEntrega">Pendiente</span>
+                                </div>
+                                <div class="firma-card-body">
+                                    <div class="firma-fecha" id="fechaFirmaEntrega">—</div>
+                                    <div class="firma-actions">
+                                        <button type="button" class="btn btn-small btn-secondary" id="btnVerFirmaEntrega">
+                                            <i class="fas fa-eye"></i> Ver
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <small style="display:block; margin-top:.5rem; color: var(--text-muted);">
+                            Genera los links arriba (Firma Recepción / Firma Entrega) y luego aquí puedes verlas.
+                        </small>
+                    </div>
+
+                    <!-- Finanzas -->
+                    <div class="form-section-card admin-edit-only form-money-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-coins"></i>
+                            <span>Valores económicos</span>
+                        </div>
+                        <div class="money-cards-grid">
+                            <div class="money-card money-card--cliente">
+                                <span class="money-card-badge">Cliente</span>
+                                <label for="editMontoCliente">Monto total cobrado</label>
+                                <div class="input-icon-wrap input-money">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                    <input type="number" id="editMontoCliente" min="0" placeholder="0">
+                                </div>
+                            </div>
+                            <div class="money-card money-card--repuestos">
+                                <span class="money-card-badge money-card-badge--accent">Repuestos</span>
+                                <label for="editCostoRepuestos">Costo repuestos ($)</label>
+                                <div class="input-icon-wrap input-money">
+                                    <i class="fas fa-gears"></i>
+                                    <input type="number" id="editCostoRepuestos" min="0" placeholder="0">
+                                </div>
+                                <small style="display:block; margin-top:.35rem; color: var(--text-muted); font-size:.75rem;">
+                                    Si el cliente trajo repuestos, déjalo en 0.
+                                </small>
+                            </div>
+                            <div class="money-card money-card--mecanico">
+                                <span class="money-card-badge money-card-badge--accent">Mecánico</span>
+                                <label for="editPagoMecanico">Pago pactado al mecánico</label>
+                                <div class="input-icon-wrap input-money">
+                                    <i class="fas fa-hand-holding-dollar"></i>
+                                    <input type="number" id="editPagoMecanico" min="0" placeholder="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field with-icon admin-edit-only money-presupuesto-row">
+                            <label for="editPresupuesto">Presupuesto referencial ($)</label>
+                            <div class="input-icon-wrap">
+                                <i class="fas fa-file-invoice-dollar"></i>
+                                <input type="number" id="editPresupuesto" min="0" placeholder="Ej: 150000">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions-professional">
+                        <button type="button" class="btn btn-cancel-modal" id="btnCancelarEditarOrden">
+                            <i class="fas fa-arrow-left"></i> Cancelar
+                        </button>
+                        <span class="form-actions-spacer" aria-hidden="true"></span>
+                        <button type="button" class="btn btn-delete-modal" id="btnEliminarOrden">
+                            <i class="fas fa-trash-alt"></i> Eliminar
+                        </button>
+                        <button type="submit" class="btn btn-save-modal">
+                            <i class="fas fa-check"></i> Guardar cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Modal Agregar Gasto (Admin) -->
+    <div class="modal" id="modalGasto">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-file-invoice-dollar"></i> Agregar Gasto</h3>
+                <button class="btn-close" onclick="cerrarModalGasto()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="formGasto">
+                    <div class="input-group">
+                        <label for="gastoDescripcion">Descripción del Gasto *</label>
+                        <input type="text" id="gastoDescripcion" required placeholder="Ej: Compra de aceite, repuestos, insumos...">
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="gastoMonto">Monto ($) *</label>
+                            <input type="number" id="gastoMonto" required min="1" placeholder="Ej: 50000">
+                        </div>
+                        <div class="input-group">
+                            <label for="gastoCategoria">Categoría</label>
+                            <select id="gastoCategoria">
+                                <option value="repuestos">Repuestos</option>
+                                <option value="aceite">Aceite y Lubricantes</option>
+                                <option value="herramientas">Herramientas</option>
+                                <option value="insumos">Insumos Taller</option>
+                                <option value="servicios">Servicios (Luz, Agua, etc)</option>
+                                <option value="otros">Otros</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="gastoFecha">Fecha</label>
+                        <input type="date" id="gastoFecha">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="cerrarModalGasto()">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Guardar Gasto
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Agregar Repuesto (Admin) -->
+    <div class="modal" id="modalRepuesto">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-box"></i> Agregar Repuesto</h3>
+                <button class="btn-close" id="btnCloseModalRepuesto"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="formRepuesto">
+                    <div class="input-group">
+                        <label for="repuestoNombre">Nombre del Repuesto *</label>
+                        <input type="text" id="repuestoNombre" required placeholder="Ej: Aceite 10W-40">
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="repuestoStock">Stock Actual *</label>
+                            <input type="number" id="repuestoStock" required min="0" placeholder="Ej: 10">
+                        </div>
+                        <div class="input-group">
+                            <label for="repuestoMinimo">Stock Mínimo *</label>
+                            <input type="number" id="repuestoMinimo" required min="1" placeholder="Ej: 5">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="btnCancelarRepuesto">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Guardar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nuevo Usuario (Admin) -->
+    <div class="modal" id="modalNuevoUsuario">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-plus"></i> Crear Nuevo Usuario</h3>
+                <button class="btn-close" id="btnCloseModalUsuario"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="formNuevoUsuario">
+                    <div class="input-group">
+                        <label for="newUserNombre">Nombre Completo *</label>
+                        <input type="text" id="newUserNombre" required placeholder="Ej: Juan Pérez">
+                    </div>
+                    <div class="input-group">
+                        <label for="newUserEmail">Correo Electrónico *</label>
+                        <input type="email" id="newUserEmail" required placeholder="ejemplo@taller.cl">
+                    </div>
+                    <div class="input-group">
+                        <label for="newUserPassword">Contraseña *</label>
+                        <input type="password" id="newUserPassword" required placeholder="Mínimo 6 caracteres" minlength="6">
+                    </div>
+                    <div class="input-group">
+                        <label for="newUserRol">Rol *</label>
+                        <select id="newUserRol" required>
+                            <option value="">Seleccionar rol...</option>
+                            <option value="admin">Administrador (Dueño)</option>
+                            <option value="jefe">Jefe de Taller</option>
+                            <option value="mecanico">Mecánico</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="btnCancelarUsuario">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Crear Usuario
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Cache busting: fuerza a recargar script.js al actualizar -->
+    <script src="script.js?v=20260429-3"></script>
+</body>
+</html>
